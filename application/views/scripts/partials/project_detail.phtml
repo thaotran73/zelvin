@@ -1,0 +1,137 @@
+			<?php
+			$oCommon = new CommonController();
+			$siteURL = $oCommon->siteURL();
+			
+			$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+			echo $this->form('frmDetail', $attributes);
+			echo $this->formProject->getElement('cid');
+			echo $this->formProject->getElement('pid');
+			echo $this->formProject->getElement('old_client_code');
+			echo $this->formProject->getElement('old_project_name');
+// 			echo $this->formProject->getElement('old_start_date');
+			?>
+			<input type="hidden" name="module" id="module" value="Projects">
+			<div id="show" class="bodycontainer">
+				<div id="rwb" class="rwb">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px"> 
+										Project Information
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>
+						<script type="text/javascript">
+						   $(document).ready(function(){							   
+							   //init start_date control
+							   $( "#start_date" ).datepicker({ dateFormat: 'mm/dd/yy' });
+							   //load project while onload
+							   loadProject();
+						      //load project while change client code
+						      $("#client_code").change(loadProject);
+						      $("#project_code").change(loadProjectDetail);
+						   });
+						   
+						   /**
+							* load project
+						   **/
+						   function loadProject(){
+							  id=$("#client_code").val();
+							  if (id!=''){
+						    	  var strURL = "<?php echo $siteURL . $this->url(array('action' => 'project', 'controller' => 'project'), null, true) . '/id/'?>" + id;
+						    	  $.getJSON(strURL, function(data){
+						    		  $('#project_code').empty();
+						    		  // loop through the projects here
+						    		  $.each(data.projects,function(i,dat){
+							    		  $('#project_code').append($('<option>', { 
+							    			    value: dat.project_id, 
+							    			    text : dat.project_name 
+							    			  }));
+						    		  });
+						    		  <?php $project_id = (isset($this->project_id) && $this->project_id!="")?$this->project_id:isset($this->oProject->project_id)?$this->oProject->project_id:'';?>
+						    		  $("#project_code").val('<?php echo $project_id?>');
+						    		  loadProjectDetail();
+						    	  });
+							  }
+						   }
+
+						   /**
+							* load project detail
+						   **/
+						   function loadProjectDetail(){
+							  id=$("#project_code").val();
+							  if (id) {
+						    	  var strURL = "<?php echo $siteURL . $this->url(array('action' => 'projectdetail', 'controller' => 'project'), null, true) . '/id/'?>" + id;
+						    	  $.ajax({
+			    		              url: strURL,
+			    		              type: 'get',
+			    		              cache: false,
+			    		              success: function(string){
+			    		                  var getData = $.parseJSON(string);
+			    		                  $('#server_name').val(getData.server_name);
+			    		                  $('#server_ip_address').val(getData.server_ip_address);
+			    		                  $('#class_b').val(getData.class_b);
+			    		              },
+			    		              error: function (){
+			    		                  alert('error');
+			    		              }
+			    		          });
+							  }
+						   }
+						</script>      
+						<div>
+							<table class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+								<tbody width="100%">
+									<tr>
+										<td width="25%" class="label">Client Name:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('client_code'); ?>
+										</td>
+										<td width="25%" class="label">Project Name:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('project_name'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">*Start Date:</br>(mm/dd/yyyy)</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('start_date'); ?>
+										</td>
+										<td width="25%" class="label">Owner:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('user_create'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">Description:</td>
+										<td colspan="3" width="75%" class="element">
+											<?php echo $this->formProject->getElement('description'); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<p></p>
+						<?php 
+						///if ($oCommon->checkPermission(PROJECT, 'f_insert') || $oCommon->checkPermission(PROJECT, 'f_update')){
+						?>
+						<table width="95%" border="0" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td align="right">
+										<?php echo $this->formProject->getElement('submit-button'); ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>
+						<?php //}?>
+				</div>
+			</div>
+			</form>
+			<script>
+				showChangeMenuTab();
+				bindMoT('lvTred');
+			</script>

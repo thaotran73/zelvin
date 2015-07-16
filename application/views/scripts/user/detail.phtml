@@ -1,0 +1,262 @@
+			<?php $oCommon = new CommonController();
+			$bChkUserInsert = $oCommon->checkPermission('USER', 'f_insert');
+			$bChkUserUpdate = $oCommon->checkPermission('USER', 'f_update');?>
+			<?php echo $this->chk_insert_Client;?>
+			<script type="text/javascript">
+				$(document).ready(function() {
+				    $("#permission_type").change(function() {
+					    var flag = false;
+					    if ($("#permission_type").val()==1) {
+						    flag = true;
+					    }
+				    	<?php 
+				    	if (count($this->result)):
+					    	$i=1;
+					    	foreach ($this->result as $oObj):?>
+					    		var objChkInsert = "chk_insert_<?php echo $oObj['function_name']?>";
+					    		var objChkUpdate = "chk_update_<?php echo $oObj['function_name']?>";
+					    		var objChkDelete = "chk_delete_<?php echo $oObj['function_name']?>";
+					    		var objChkImport = "chk_import_<?php echo $oObj['function_name']?>";
+					    		var objChkExport = "chk_export_<?php echo $oObj['function_name']?>";
+					    		var objChkView = "chk_view_<?php echo $oObj['function_name']?>";
+					    		$('input[name='+objChkInsert+']').attr('checked', flag);
+					    		$('input[name='+objChkUpdate+']').attr('checked', flag);
+					    		$('input[name='+objChkDelete+']').attr('checked', flag);
+					    		$('input[name='+objChkImport+']').attr('checked', flag);
+					    		$('input[name='+objChkExport+']').attr('checked', flag);
+					    		$('input[name='+objChkView+']').attr('checked', true);
+					    	<?php $i++;
+					    	endforeach;
+				    	endif;
+					?>
+				    });
+
+				    $("#submitbutton").click(function(){
+					    var bChecked = false;
+				    	$('input:checkbox:checked').each(function() {
+				    	    $(this).val(1);
+				    	    bChecked = true;
+				    	});
+				    	if (bChecked==false) {
+					    	$('#chkPermission').val('Please check permission.');
+				    	}
+				    });
+				});
+			</script>
+			<div id="show" class="bodycontainer">
+				<div id="rwb" class="rwb">
+					<?php
+					$url = $this->url(array('controller' => 'user', 'action' => 'detail'), null, true);
+					$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+					echo $this->form('frmDetail', $attributes);
+					echo $this->form->getElement('id');
+					echo $this->form->getElement('old_username');
+					echo $this->form->getElement('old_email');
+					echo $this->form->getElement('isLoad');
+					echo $this->formHidden('chkPermission');
+					?>
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px"> 
+										User Information
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>
+						<div id="secDivSolution Information">
+							<table id="secContentSolution Information" class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+								<tbody width="100%">
+									<tr>
+										<td width="25%" class="label">*User Name:</td>
+										<td width="25%" class="element">
+											<?php echo $this->form->getElement('username'); ?>
+										</td>
+										<td width="25%" class="label">*Email:</td>
+										<td width="25%" class="element">
+											<?php echo $this->form->getElement('email'); ?>
+										</td>
+									</tr>
+									<!-- 
+									<tr>
+										<td width="25%" class="label">*Password:</td>
+										<td width="25%" class="element">
+											<?php echo $this->form->getElement('password'); ?>
+										</td>
+										<td width="25%" class="label"> 
+										*Confirm Password:</td>
+										<td width="25%" class="element"> 
+											<?php echo $this->form->getElement('confirm_password'); ?>
+										</td>
+									</tr>
+									 -->
+									<tr>
+										<td width="25%" class="label"> 
+										*Permission Type:</td>
+										<td width="25%" class="element"> 
+											<?php echo $this->form->getElement('permission_type'); ?>
+										</td>
+										<td width="50%" colspan="2" class="label"></td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">Address:</td>
+										<td width="25%" class="element">
+											<?php echo $this->form->getElement('address'); ?>
+										</td>
+										<td width="25%" class="label">Phone:</br>(111) 222 3333</td>
+										<td width="25%" class="element">
+											<?php echo $this->form->getElement('phone'); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<p></p>
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px" width="20%"> 
+										Permission
+									</td>
+									<td width="70%">
+										<ul class="errors">
+											<li><?php echo $this->permission_error;?></li>
+										</ul>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<script type="text/javascript">
+							function setValueToCheckbox(obj){
+								obj.value = 0;
+								if (obj.checked==true) {
+									obj.value = 1;
+								}
+							}
+						</script>
+						<p></p>
+						<div id="secDivSolution Information">
+							<table  id="listViewTable" class="listview" width="95%" border="0" cellspacing="1" cellpadding="0">
+									<tbody>
+										<tr class="tableHeadBg">
+											<td class="tableHead">Object</td>
+											<td class="tableHead" style="text-align:center">View</td>
+											<td class="tableHead" style="text-align:center">Add New</td>
+											<td class="tableHead" style="text-align:center">Update</td>
+											<td class="tableHead" style="text-align:center">Delete</td>
+											<td class="tableHead" style="text-align:center">Import</td>
+											<td class="tableHead" style="text-align:center">Export</td>
+										</tr>
+									</tbody>
+									<tbody id="lvTred">
+										<?php 
+										function loadStatus($bStatus){
+											$check_stauts = "";
+											if ($bStatus == 1):
+												$check_stauts = "checked";
+											endif;
+											return $check_stauts;
+										}
+										if (count($this->result)):
+											$i=1;
+											foreach ($this->result as $oObj):
+										?>
+										<tr id="item1" class="tdout">
+											<td width="200"><?php echo $oObj['function_name']?></td>
+											<td width="100">
+											<?php 
+												$element = $this->form->getElement('chk_view_'.$oObj['function_name']);
+												if ($this->form->getElement('isLoad')->getValue()==false) {
+													echo $element->setCheckedValue($oObj['f_view']==1?0:1);		
+												}else {
+													echo $element;
+												}
+											?>
+											</td>
+											<td width="100">
+												<?php 
+												$element = $this->form->getElement('chk_insert_'.$oObj['function_name']);
+												if ($this->form->getElement('isLoad')->getValue()==false) {
+													echo $element->setCheckedValue($oObj['f_insert']==1?0:1);
+												}else {
+													echo $element;
+												}
+												?>
+											</td>
+											<td width="100">
+												<?php 
+												$element = $this->form->getElement('chk_update_'.$oObj['function_name']);
+												if ($this->form->getElement('isLoad')->getValue()==false) {
+													echo $element->setCheckedValue($oObj['f_update']==1?0:1);
+												}else {
+													echo $element;
+												}
+												?>
+											</td>
+											<td width="100">
+												<?php
+												$element = $this->form->getElement('chk_delete_'.$oObj['function_name']);
+												if ($this->form->getElement('isLoad')->getValue()==false) {
+													echo $element->setCheckedValue($oObj['f_delete']==1?0:1);
+												}else {
+													echo $element;
+												} 
+												?>
+											</td>
+											<td width="100">
+												<?php  
+												$element = $this->form->getElement('chk_import_'.$oObj['function_name']);
+												if ($this->form->getElement('isLoad')->getValue()==false) {
+													echo $element->setCheckedValue($oObj['f_import']==1?0:1);
+												}else {
+													echo $element;
+												} 
+												?>
+											</td>
+											<td width="100">
+												<?php 
+												$element = $this->form->getElement('chk_export_'.$oObj['function_name']);
+												if ($this->form->getElement('isLoad')->getValue()==false) {
+													echo $element->setCheckedValue($oObj['f_export']==1?0:1);
+												}else {
+													echo $element;
+												} 
+												?>
+											</td>
+										</tr>
+										<?php
+											$i++;
+											endforeach;
+										endif;
+										?>									
+									</tbody>
+								</table>
+						</div>
+						<p></p>
+						<?php 
+						$bSave = false;
+						if ($this->id) {
+							if ($bChkUserUpdate == true){
+								$bSave = true;
+							}
+						} else {
+							if ($bChkUserInsert == true) {
+								$bSave = true;
+							}
+						}
+						if ($bSave == true) {?>
+						<table width="95%" border="0" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td align="right">
+										<?php echo $this->form->getElement('submit-button'); ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>	
+						<?php }?>					
+					</form>
+				</div>
+			</div>

@@ -1,0 +1,120 @@
+				<?php $oCommon = new CommonController();
+				$bChkNessusUpdate = $oCommon->checkPermission('NESSUS', 'f_update');
+				$bChkNessusInsert = $oCommon->checkPermission('NESSUS', 'f_insert');
+				?>
+				<div id="show" class="bodycontainer">
+				<?php 
+				$project_id = isset($this->oProject->project_id)?$oCommon->encodeKey($this->oProject->project_id):'';
+				$nessus_detail_id = $this->id;?>
+				<style>
+					#submitbutton-element {
+						display: inline-block;
+					}
+					#cancelbutton-element {
+						margin-left: 0px !important;
+						display: inline-block;
+					}
+				</style>
+				<script language="javascript">
+					function doCancel(){
+						top.location.href = '<?php echo $this->url(array('controller' => 'nessus', 'action' => 'plugin', 'pid' => $project_id, 'id' => $nessus_detail_id), null, true);?>' 
+					}
+				</script>
+				<?php 
+				$url = $this->url(array('controller' => 'nessus', 'action' => 'detail', 'pid' => $project_id, 'id' => $nessus_detail_id), null, true);
+				include_once APPLICATION_PATH . '/views/scripts/partials/project_nessus_viewdetail.phtml';
+				?>
+				<!-- nessus plugin Information -->
+				<?php include_once 'menu.phtml';?>
+				<div>
+					<div id="rwb" class="rwb" style="margin:0 !important">
+					<?php
+// 					$url = $this->url(array('controller' => 'nessus', 'action' => 'detail', 'pid' => $project_id), null, true);
+					$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+					echo $this->form('frmDetail', $attributes);
+					echo $this->form->getElement('plid');
+					echo $this->form->getElement('id');
+					echo $this->form->getElement('pid');
+					?>
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px"> 
+										Nessus Plugin Information
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div>
+							<table class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+								<tbody width="100%">
+									<tr>
+										<td class="label" width="15%">*Plugin id</td>
+										<td class="element" width="28%">
+										<?php echo $this->form->getElement('plugin_id'); ?>
+										</td>
+										<td class="label" width="16%">*Risk level</td>
+										<td class="element" width="27%">
+										<?php echo $this->form->getElement('risk_level'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td class="label" width="15%">Title</td>
+										<td class="element" width="85%" colspan="3">
+										<?php echo $this->form->getElement('title'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td class="label" width="16%">Explanation</td>
+										<td class="element" width="85%" colspan="3">
+										<?php echo $this->form->getElement('explanation'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td class="label" width="15%">Plugin output</td>
+										<td class="element" width="85%" colspan="3">
+										<?php echo $this->form->getElement('plugin_output'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td class="label" width="15%">Solution</td>
+										<td class="element" width="85%" colspan="3">
+										<?php echo $this->form->getElement('solution'); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<p></p>
+							<table width="95%" border="0" cellpadding="0" cellspacing="0">
+								<tbody>
+									<tr>
+										<td align="right">
+											<?php 
+											$bSave = false;
+											if ($this->id) {
+												if ($bChkNessusUpdate == true){
+													$bSave = true;
+												}
+											} else {
+												if ($bChkNessusInsert == true) {
+													$bSave = true;
+												}
+											}
+											if ($bSave == true) {
+												echo $this->form->getElement('submit-button'); 
+											}?>
+											<?php echo $this->form->getElement('cancel-button'); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+				<!-- project NMAP Information -->
+				
+			</div>
+		</div>
+		<script>
+			showChangeMenuTab();
+		</script>

@@ -1,0 +1,166 @@
+			<?php
+			$oCommon = new CommonController();
+			$project_id = isset($this->oProject->project_id)?$oCommon->encodeKey($this->oProject->project_id):'';
+			$bChkAssignmentInsert = $oCommon->checkPermission('ASSIGNMENT', 'f_insert');
+			$bChkAssignmentUpdate = $oCommon->checkPermission('ASSIGNMENT', 'f_update');
+			?>
+			<script type="text/javascript">
+				$(document).ready(function() {
+
+					var $radios = $('input:radio[name=range_type]');
+			        $radios.filter('[value=<?php echo $this->range_type?>]').attr('checked', true);
+					
+				    $("#btnPush").click(function() {
+				    	var strUser = $("#username").val();
+				    	if (strUser!=null) {
+					    	strUser = strUser.toString();
+				    		var arrUser = strUser.split(",");
+					    	for(var i = 0; i < arrUser.length; i++){
+					    		if ( $('#username_assigned option[value='+arrUser[i]+']').length == 0 ){
+					    			$('#username_assigned').append($('<option>', { 
+					    			    value: arrUser[i], 
+					    			    text : arrUser[i] 
+				    			  	}));
+					    		}
+					    	}
+					    	$('#lbl_username').text('');
+				    	} else {
+					    	$('#lbl_username').text('<?php echo SELECT_USER_MSG?>');
+				    	}
+				    }) ;
+
+				    $("#btnPull").click(function() {
+				    	var strUser = $("#username_assigned").val();
+				    	if (strUser!=null) {
+					    	strUser = strUser.toString();
+					    	var arrUser = strUser.split(",");
+					    	for(var i = 0; i < arrUser.length; i++){
+					    		$("#username_assigned option[value='"+arrUser[i]+"']").remove();
+					    	}
+					    	$('#lbl_username_assigned').text('');
+				    	} else {
+					    	$('#lbl_username_assigned').text('<?php echo SELECT_USER_MSG?>');
+				    	}
+				    }) ;
+				    $("#submitbutton").click(function (){
+				    	$("#username_assigned option").attr("selected","selected");
+				    });
+				});
+			</script>
+			<div id="show" class="bodycontainer">
+				<?php 
+				$url = $this->url(array('controller' => 'assignment', 'action' => 'detail', 'pid' => $project_id), null, true);
+				include_once APPLICATION_PATH . '/views/scripts/partials/project_viewdetail.phtml';
+				?>
+				<?php include_once 'menu.phtml';?>
+				<div>
+					<div id="rwb" class="rwb" style="margin:0 !important">
+					<?php
+					$url = $this->url(array('controller' => 'assignment', 'action' => 'detail', 'pid' => $project_id), null, true);
+					$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+					echo $this->form('frmDetail', $attributes);
+					echo $this->form->getElement('id');
+					echo $this->form->getElement('pid');
+					?>
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px"> 
+										Assignment
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div>
+							<table class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+								<tbody width="100%">
+									<!-- 
+									<tr>
+										<td class="label" width="15%"></td>
+										<td width="71%">
+											<?php echo $this->form->getElement('range_type')?>
+										</td>
+									</tr>
+									 -->
+									<tr>
+										<td width="4%" style="text-align: right">
+										<input id="range_type-0" type="radio" value="0" name="range_type"></td>
+										<td class="label" width="11%">
+										IP ranges<br>
+										(Separated by ,)</td>
+										<td class="element" width="71%"> 
+										<?php echo $this->form->getElement('ip_address_list'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td width="4%" style="text-align: right">
+										<input id="range_type-1" type="radio" value="1" name="range_type"></td>
+										<td class="label" width="11%">
+										Mnemonic ranges<br>
+										(Separated by ,)</td>
+										<td class="element" width="71%"> 
+										<?php echo $this->form->getElement('mnemonics_list'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td class="title hline" width="25%" colspan="2" style="vertical-align:top !important">Assigned Users:</td>
+										<td class="element" width="75%">
+											<table class="secContent" width="100%" border="0" cellspacing="1" cellpadding="0">
+												<tbody width="100%">
+													<tr>
+														<td width="45%" class="element">
+															<?php echo $this->form->getElement('username'); ?>
+														</td>
+														<td width="10%" class="element">
+															<div style="margin-top:45px; margin-left: 27px; text-align: center; vertical-align: middle;">
+																<input class="button" type="button" name="btnPush" id="btnPush" value="&gt;&gt;">
+																<p></p>
+																<input class="button" type="button" name="btnPulll" id="btnPull" value="&lt;&lt;">
+															</div>
+														</td>
+														<td width="45%" class="element">
+															<?php echo $this->form->getElement('username_assigned'); ?>
+														</td>
+													</tr>
+													<tr>
+														<td width="45%" class="element"><ul class="errors"><li><span id="lbl_username"></span></li></ul></td>
+														<td width="10%" class="element"></td>
+														<td width="45%" class="element"><ul class="errors"><li><span id="lbl_username_assigned"></span></li></ul></td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<?php 
+							$bSave = false;
+							if ($this->id) {
+								if ($bChkAssignmentUpdate == true){
+									$bSave = true;
+								}
+							} else {
+								if ($bChkAssignmentInsert == true) {
+									$bSave = true;
+								}
+							}
+							if ($bSave == true) {
+							?>
+							<p></p>
+							<table width="95%" border="0" cellpadding="0" cellspacing="0">
+								<tbody>
+									<tr>
+										<td align="right">
+											<?php echo $this->form->getElement('submit-button'); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<?php }?>
+						</div>
+					</form>
+				</div>
+				<!-- Project NMAP Information -->
+				
+			</div>
+		</div>

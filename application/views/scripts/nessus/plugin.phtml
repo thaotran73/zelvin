@@ -1,0 +1,167 @@
+			<div id="show" class="bodycontainer">
+				<?php 
+				$oCommon = new CommonController();
+				$bChkProjectInsert = $oCommon->checkPermission('PROJECT', 'f_insert');
+				$bChkProjectUpdate = $oCommon->checkPermission('PROJECT', 'f_update');
+				$bChkNessusView = $oCommon->checkPermission('NESSUS', 'f_view');
+				$bChkNessusInsert = $oCommon->checkPermission('NESSUS', 'f_insert');
+				$bChkNessusUpdate = $oCommon->checkPermission('NESSUS', 'f_update');
+				$bChkNessusDelete = $oCommon->checkPermission('NESSUS', 'f_delete');
+				$project_id = isset($this->oProject->project_id)?$oCommon->encodeKey($this->oProject->project_id):'';
+				$nessus_detail_id = $this->id;
+				$url = $this->url(array('controller' => 'nessus', 'action' => 'plugin', 'pid' => $project_id, 'id' => $nessus_detail_id, 'cpage' => $this->countperpage), null, true);
+				include_once APPLICATION_PATH . '/views/scripts/partials/project_nessus_viewdetail.phtml';
+				?>
+				<?php include_once 'menu.phtml';?>
+				<script type="text/javascript">
+				   $(document).ready(function(){
+					   <?php if ($bChkNessusInsert == false) {?>
+						    $("#btnCreateNew").attr('disabled', 'disabled');
+						<?php }?>
+						<?php if ($bChkNessusDelete == false) {?>
+						    $("#btnDelete").attr('disabled', 'disabled');
+						    $("input[type='checkbox']").attr('disabled', 'disabled');
+						<?php }?>
+				   });
+				</script>
+				<div>
+					<form name="frmSearch" id="frmSearch" method="POST" action="<?php echo $url?>">		
+						<?php echo $this->formHidden('hidDel');
+							echo $this->formPlugin->getElement('pid');
+							echo $this->formPlugin->getElement('id');
+						?>
+						<script>
+							function doDelete(){
+								var frm = document.frmSearch;
+								frm.hidDel.value = selectChecked(document.frmSearch);
+								frm.action = "<?php echo $url;//$this->url(array('controller' => 'nessus', 'action' => 'plugin', 'pid' => $project_id, 'id' => $nessus_detail_id), null, true)?>";
+								frm.submit();
+							}
+						</script>					
+						<div class="idForCVpadding" style="width: 100%; ">
+							<div class="listviewBorder">
+								<div class="listviewButtonLayer" style="width: 1024px; ">
+									<div class="pwie">
+										<table width="100%" border="0" cellpadding="0" cellspacing="0" class="lvblayerTable secContentbb">
+											<tbody>
+												<tr>
+													<td>
+														<table border="0" cellspacing="0" cellpadding="0" align="left">
+															<tbody>
+																<tr>
+																	<td class="pL10"> 
+																		<input type="button" id="btnDelete" name="btnDelete" class="button" value="Delete" onclick="doDelete()">
+																	</td>
+																	<td class="pL10">
+																		<input type="button" id="btnCreateNew" name="btnCreateNew" class="button createNewBtn" value="New Detail" onclick="javascript:location.href='<?php echo $this->url(array('controller' => 'nessus', 'action' => 'detail', 'pid' => $project_id, 'id' => $nessus_detail_id), null, true); ?>'">
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>   
+													<td width="10"> 
+												<img src="<?php echo $this->baseUrl().'/public/images/spacer.gif';?>" class="advancedsearch floatR" border="0" align="absmiddle" title="Search" onclick="javascript:callAdvSearch('Projects')"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<table width="100%" border="0" cellpadding="0" cellspacing="0" id="listViewTable" class="listview">
+									<tbody>
+										<tr id="advancedSearch_showpickId_Projects" height="35" width="100%" style="display:none;">
+											<td colspan="5">
+												<table border="0" width="100%" style="padding:5px">
+													<tr>
+														<td width="15%">Plugin id</td>
+														<td width="28%"><?php echo $this->formPlugin->getElement('plugin_id_search'); ?></td>
+														<td width="15%">Title</td>
+														<td width="28%"><?php echo $this->formPlugin->getElement('title_search'); ?></td>
+													</tr>
+													<tr>
+														<td width="15%">Plugin output</td>
+														<td width="28%"><?php echo $this->formPlugin->getElement('plugin_output_search'); ?></td>
+														<td width="16%">Explanation</td>
+														<td width="27%"><?php echo $this->formPlugin->getElement('explanation_search'); ?></td>
+													</tr>
+													<tr>
+														<td width="15%">Risk level</td>
+														<td width="28%"><?php echo $this->formPlugin->getElement('risk_level_search'); ?></td>
+														<td width="16%">Solution</td>
+														<td width="27%"><?php echo $this->formPlugin->getElement('solution_search'); ?></td>
+													</tr>
+												</table>
+											</td>
+											<td style="vertical-align: bottom; padding-bottom:5px">
+												<?php echo $this->formPlugin->getElement('button-search'); ?>
+											</td>
+										</tr>
+									<tbody>
+								</table>
+								<div class="header">
+									<div style="width: 1008px;">
+										<table width="1008px" border="0" cellpadding="0" cellspacing="0" id="listViewTable" class="listview">
+											<thead>
+												<tr class="tableHeadBg">
+													<td width="2%">
+														<input type="checkbox" name="allcheck" onclick="selectAll(document.frmSearch)">
+													</td>
+													<td width="8%"> 
+														Plugin ID
+													</td>
+													<td width="18%"> 
+														Title
+													</td>
+													<td width="18%"> 
+														Explanation
+													</td>
+													<td width="18%"> 
+														Plugin Output
+													</td>
+													<td width="18%"> 
+														<a href="<?php echo $this->url(array('controller' => 'nessus', 'action' => 'plugin', 'pid' => $project_id, 'id' => $nessus_detail_id, 'page' => $this->page, 'cpage' => $this->countperpage, 'st' => $this->st), null, true)?>">Risk Level</a>
+													</td>
+													<td width="18%"> 
+														Solution
+													</td>
+												</tr>
+											</thead>
+										</table>
+									</div>
+									<div class="content">
+										<table width="1008px" border="0" cellpadding="0" cellspacing="0" id="listViewTable" class="listview">
+											<tbody id="lvIP">
+												<?php 
+												if (count($this->paginator)):
+													foreach ($this->paginator as $oObj):
+													$nessus_plugin_id = $oCommon->encodeKey($oObj['nessus_plugin_id']);
+													?>
+												<tr id="nessus1" class="tdout" style="vertical-align: top">
+													<td width="2%">
+														<input type="checkbox" name="chk" value="<?php echo $nessus_plugin_id?>">
+													</td>
+													<td width="8%" style="vertical-align: top">
+														<a href="<?php echo $this->url(array('controller' => 'nessus', 'action' => 'detail', 'pid' => $project_id, 'id' => $nessus_detail_id, 'plid' => $nessus_plugin_id), null, true)?>"><?php echo $oObj['plugin_id']?></a>
+													</td>
+													<td width="18%" style="vertical-align: top"><?php echo $oCommon->cutAString($oObj['title'])?></td>
+													<td width="18%"><?php echo $oCommon->cutAString($oObj['explanation'])?></td> 
+													<td width="18%"><?php echo $oCommon->cutAString($oObj['plugin_output'])?></td> 
+													<td width="18%"><?php echo $oCommon->detectRickLevel($oObj['risk_level'])?></td> 
+													<td width="18%"><?php echo $oCommon->cutAString($oObj['solution'])?></td> 
+												</tr>
+												<?php
+													endforeach;
+												endif;
+												?>	
+												</tbody>
+											</table>
+										</div>
+									</div>			
+								<?php echo $this->paginationControl($this->paginator, 
+								        							'Sliding',
+                                    								'/partials/pagination.phtml', $this->paginatorParams); ?>
+							</div>
+							<br>
+						</div>
+					</form>
+				</div>
+			</div>

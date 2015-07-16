@@ -1,0 +1,101 @@
+				<div id="show" class="bodycontainer">
+					<div id="rwb" class="rwb">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td height="30" class="title hline" style="padding-left:10px"> 
+											User Information
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<p></p>
+							<div id="secDivSolution Information">
+								<table id="secContentSolution Information" class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+									<tbody width="100%">
+										<tr>
+											<td width="25%" class="label">User Name:</td>
+											<td width="25%" class="element">
+												<?php echo $this->formUser->getElement('username'); ?>
+											</td>
+											<td width="25%" class="label">Email:</td>
+											<td width="25%" class="element">
+												<?php echo $this->formUser->getElement('email'); ?>
+											</td>
+										</tr>
+										<tr>
+											<td width="25%" class="label">Permission Type:</td>
+											<td width="25%" class="element"> 
+												<?php echo $this->formUser->getElement('permission_type_view'); ?>
+											</td>
+											<td width="50%" colspan="2" class="label"></td>
+										</tr>
+										<tr>
+											<td width="25%" class="label">Address:</td>
+											<td width="25%" class="element">
+												<?php echo $this->formUser->getElement('address'); ?>
+											</td>
+											<td width="25%" class="label">Phone:</td>
+											<td width="25%" class="element">
+												<?php echo $this->formUser->getElement('phone'); ?>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+					</div>
+				</div>
+				<div id="show" class="bodycontainer">
+				<div id="rwb" class="rwb">
+					<?php
+					$url = $this->url(array('controller' => 'user', 'action' => 'adchangepass'), null, true);
+					$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+					echo $this->form('frmChangePass', $attributes);
+					echo $this->formHidden('uid', $this->uid);
+					?>
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px"> 
+										Change Password
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>
+						<div id="secDivSolution Information">
+							<table id="secContentSolution Information" class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+								<tbody width="100%">
+									<tr id="row1_Solution Information">
+										<td width="30%" class="label">*New Password:</td>
+										<td width="70%" class="element">
+											<?php echo $this->form->getElement('new_password'); ?>
+										</td>
+									</tr>
+									<tr id="row1_Solution Information">
+										<td width="30%" class="label">*Confirm New Password:</td>
+										<td width="70%" class="element">
+											<?php echo $this->form->getElement('confirm_password'); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<p></p>
+						<table width="95%" border="0" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td align="right">
+										<?php echo $this->form->getElement('submit-button'); ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>
+					</form>
+				</div>
+			</div>
+			<script>
+				showChangeMenuTab();
+				bindMoT('lvTred');
+			</script>

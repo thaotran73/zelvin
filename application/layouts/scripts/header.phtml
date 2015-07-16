@@ -1,0 +1,52 @@
+		<?php 
+		$oCommon = new Application_Model_Common();
+		$infoUser = $oCommon->loadInfoUser();
+		?>
+		<style type="text/css">
+			table {
+			  table-layout: fixed;
+			}
+		</style>
+		<div class="topdivbg1" id="topdivbg">
+				<div class="topdivcontainer">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="topBg">
+						<tbody>
+							<tr>
+								<td rowspan="2" class="logoLayer"> 
+									
+								</td>
+								<td class="topLinkLayer" valign="top">
+									<div id="tmC">
+										<div class="floatR">
+											<a href="<?php echo $this->url(array('controller' => 'user', 'action' => 'index', 'ns' => 1), null, true);?>" id="linkMgnt" class="link">User Management&nbsp;</a>
+											<span class="sep">|</span>
+											<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'logout'), null, true);?>" id="linkSignout" class="link">Sign Out&nbsp;</a>
+											<span class="sep">|</span>
+											<a href="<?php echo $this->url(array('controller' => 'user', 'action' => 'changepass'), null, true);?>" id="linkUser" class="link"><?php echo $infoUser->username?></a>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="newMenuTable">
+						<tbody>
+							<tr>
+								<td class="menuLayer" id="menuTD" nowrap="">
+									<div id="menuinhome">
+										<div id="menuContent" class="menu">
+											<div>
+												<div class="newmenu" id="change_menu">
+													<a id="tab_Clients" href="<?php echo $this->url(array('controller' => 'client', 'action' => 'index', 'ns' => 1), null, true);?>" class="menuOn"><nobr> Clients</nobr></a> 
+													<a id="tab_Projects" href="<?php echo $this->url(array('controller' => 'project', 'action' => 'index', 'ns' => 1), null, true);?>" class="menuOn"><nobr> Projects</nobr></a>
+												</div>
+											</div>
+											<div style="clear:both;"></div>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>

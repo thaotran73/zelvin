@@ -1,0 +1,27 @@
+				<?php 
+				$oCommon = new CommonController();
+				$project_id = isset($this->oProject->project_id)?$oCommon->encodeKey($this->oProject->project_id):'';
+				?>
+				<div class="topdivbg1" id="topdivbg">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="newMenuTable">
+						<tbody>
+							<tr>
+								<td class="menuLayer" id="menuTD" nowrap="">
+									<div id="menuinhome">
+										<div id="menuContent" class="menu">
+											<div>
+												<div class="newmenu" id="change_menu">
+													<a id="tab_Clients" href="<?php echo $this->url(array('controller' => 'ipaddress', 'action' => 'index', 'ns' => 1, 'pid' => $project_id), null, true); ?>" class="menuOn"><nobr> IP Address</nobr></a> 
+													<a id="tab_Projects" href="<?php echo $this->url(array('controller' => 'nmap', 'action' => 'index', 'ns' => 1, 'pid' => $project_id), null, true); ?>" class="sel"><nobr> Nmap</nobr></a>
+													<a id="tab_Projects" href="<?php echo $this->url(array('controller' => 'nessus', 'action' => 'index', 'ns' => 1, 'pid' => $project_id), null, true); ?>" class="menuOn"><nobr> Nessus</nobr></a>
+													<a id="tab_projects" href="<?php echo $this->url(array('controller' => 'assignment', 'action' => 'index', 'ns' => 1, 'pid' => $project_id), null, true); ?>" class="menuOn"><nobr> Assignment</nobr></a>
+												</div>
+											</div>
+											<div style="clear:both;"></div>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>

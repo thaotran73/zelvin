@@ -1,0 +1,54 @@
+		<style>
+			dd {
+				margin: 0px !important;
+				padding: 0px !important;
+				display: inline-block;
+			}
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#cancelbutton").click(function(){
+					location.href = "<?php echo $this->url(array('controller' => 'index', 'action' => 'index'), null, true)?>";
+				});
+			});
+		</script>
+		<center>
+		<div id="basic">
+		<!-- Master Header -->
+		<?php
+		$url = $this->url(array('controller' => 'index', 'action' => 'forgotpass'), null, true);
+		$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+		echo $this->form('frmForgotPass', $attributes);
+		?>
+			<div id="show" class="bodycontainer" style="padding-top: 50px; ">
+				<div id="rwb" class="rwb" style="width:400px;height: 200px; padding-top: 90px;">
+					<div>
+						<table width="100%" border="0" cellspacing="1" cellpadding="0">
+							<tbody width="100%">
+								<tr>
+									<td colspan="2" height="30" class="title hline" align="center"> 
+										Forgot Password</td>
+								</tr>
+								<tr>
+									<td width="25%" class="label">Email:</td>
+									<td width="75%" class="element">
+										<?php echo $this->form->getElement('email'); ?>
+									</td>
+								</tr>
+								<tr>
+									<td width="25%" class="label"> </td>
+									<td width="75%" class="element">
+										<?php echo $this->form->getElement('submit-button');?>&nbsp;
+										<?php echo $this->form->getElement('cancel-button');?>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p></p>
+				</div>
+			</div>
+		</form>
+		</div>
+		</center>

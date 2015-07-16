@@ -1,0 +1,110 @@
+<?php
+/*
+* Search pagination
+*/
+?>
+<?php 
+if ($this->totalItemCount>0):
+	$url = $this->url(array('page' => $this->current));
+	if (strrpos($url, 'cpage')>0) {
+		$url = substr($url, 0, (strrpos($url, 'cpage')-1));
+	}
+	?>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#cpage').val('<?php echo $this->itemCountPerPage?>');
+		});
+		function doChangeCountPerPage(){
+			var cpage = $("#cpage option:selected").text();
+			location.href = "<?php echo $url . '/cpage/'; ?>" + cpage;
+		}
+	</script>
+	<div class="listviewBorder123">
+		<div class="listviewButtonLayer">
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<div align="right"> 
+								<table width="100%" border="0" cellspacing="0" cellpadding="0" style="text-align: left">
+									<tbody>
+										<tr>
+										 	<?php echo $this->formHidden('page', $this->current);?>
+										 	<td>
+										 		Show 
+										 		<select name="cpage" id="cpage" size="1" onchange="doChangeCountPerPage()">
+													<option value="25">25</option>
+													<option value="50">50</option>
+													<option value="100">100</option>
+													<option value="200">200</option>
+												</select>
+										 		entries
+										 	</td>
+											<td >
+												<table height="25" border="0" cellpadding="0" cellspacing="1" align="left">
+													<tbody>
+														<tr>
+															<td class="viewbg" align="right"> 
+																<?php echo $this->firstItemNumber; ?> - <?php echo $this->lastItemNumber; ?>
+															 		of <?php echo $this->totalItemCount; ?> records &nbsp;
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+											<td>
+												<table height="25" border="0" cellpadding="0" cellspacing="1" align="right">
+													<tbody>
+														<tr>
+															<td align="right" nowrap="">
+																<div class="paginationControl">
+																	<!-- First page link -->
+																	<?php if (isset($this->previous)): ?>
+																	  <a href="<?php echo $this->url(array('page' => $this->first)); ?>">First </a> 
+																	<?php else: ?>
+																	  First 
+																	<?php endif; ?>
+																	<!-- Previous page link -->
+																	<?php if (isset($this->previous)): ?>
+																	  <a href="<?php echo $this->url(array('page' => $this->previous)); ?>"> Previous  </a> 
+																	<?php else: ?>
+																	  Previous 
+																	<?php endif; ?>
+																	
+																	<?php foreach ($this->pagesInRange as $page): ?>
+																		<?php if ($page == $this->current):?>
+																			<?php echo $page; ?>
+																		<?php else:?>
+																			<a href="<?php echo $this->url(array('page' => $page)); ?>">  <?php echo $page?> </a>	
+																		<?php endif;?>
+																	<?php endforeach; ?>
+										
+																	<!-- Next page link -->
+																	<?php if (isset($this->next)): ?>
+																	  <a href="<?php echo $this->url(array('page' => $this->next)); ?>">  Next </a> 
+																	<?php else: ?>
+																	  Next 
+																	<?php endif; ?>
+																	<!-- Last page link -->
+																	<?php if (isset($this->next)): ?>
+																	  <a href="<?php echo $this->url(array('page' => $this->last)); ?>">  Last  </a>
+																	<?php else: ?>
+																	  Last
+																	<?php endif; ?>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+<?php endif;?>

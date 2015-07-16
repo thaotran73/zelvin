@@ -1,0 +1,59 @@
+		<style>
+			dd {
+				margin: 0px !important;
+				padding: 0px !important;
+				display: inline-block;
+			}
+		</style>
+		<center>
+		<div id="basic">
+		<!-- Master Header -->
+			<?php
+			$url = $this->url(array('controller' => 'index', 'action' => 'index'), null, true);
+			$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+			echo $this->form('frmLogin', $attributes);
+			?>
+			<div id="show" class="bodycontainer" style="padding-top: 50px; ">
+				<div id="rwb" class="rwb" style="width:500px;height: 300px; padding-top: 20px; padding-bottom: 50px;">
+					<div>
+						<table width="100%" border="0" cellspacing="1" cellpadding="0">
+							<tbody width="100%">
+								<tr>
+									<td colspan="2" height="30" class="title hline" align="center"> 
+										Login
+									</td>
+								</tr>
+								<tr>
+									<td width="25%" class="label"></td>
+									<td width="75%" style="padding-left:40px; color:red">
+										<?php echo $this->error;?>
+									</td>
+								</tr>
+								<tr>
+									<td width="25%" class="label">User ID:</td>
+									<td width="75%" class="element">
+										<?php echo $this->form->getElement('username'); ?>
+									</td>
+								</tr>
+								<tr>
+									<td width="25%" class="label">Password:</td>
+									<td width="25%" class="element">
+										<?php echo $this->form->getElement('password'); ?>
+									</td>
+								</tr>
+								<tr>
+									<td width="25%" class="label"> </td>
+									<td width="75%" class="element">
+										<?php echo $this->form->getElement('submit-button');?>&nbsp;
+										<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'forgotpass'), null, true)?>" class="link">Forgot password?</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p></p>
+				</div>
+			</div>
+			</form>
+		</div>
+		</center>

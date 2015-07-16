@@ -1,0 +1,220 @@
+			<?php 
+			$oCommon = new CommonController();
+			$bChkClientInsert = $oCommon->checkPermission('CLIENT', 'f_insert');
+			$bChkClientUpdate = $oCommon->checkPermission('CLIENT', 'f_update');
+			$bChkProjectInsert = $oCommon->checkPermission('PROJECT', 'f_insert');
+			$bChkProjectUpdate = $oCommon->checkPermission('PROJECT', 'f_update');
+			$bChkProjectDelete = $oCommon->checkPermission('PROJECT', 'f_delete');
+			?>
+			<script type="text/javascript">
+				$(document).ready(function() {
+					<?php if ($bChkProjectDelete == false) {?>
+					    $("#btnDelete").attr('disabled', 'disabled');
+					    $("input[type='checkbox']").attr('disabled', 'disabled');
+					<?php }?>
+					<?php if ($bChkProjectInsert == false) {?>
+					    $("#btnCreateNew").attr('disabled', 'disabled');
+					<?php }?>
+					//init start_date control
+				   $( "#start_date_search" ).datepicker({ dateFormat: 'mm/dd/yy' });
+				});
+			</script>
+			<input type="hidden" name="module" id="module" value="Clients">
+			<div id="show" class="bodycontainer">
+				<div id="rwb" class="rwb">
+					<?php
+					$url = $this->url(array('controller' => 'client', 'action' => 'detail'), null, true);
+					$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+					echo $this->form('frmDetail', $attributes);
+					echo $this->formClient->getElement('cid');
+					echo $this->formClient->getElement('old_client_name');
+					?>
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px"> 
+										Client Information
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>
+						<div id="secDivSolution Information">
+							<table id="secContentSolution Information" class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+								<tbody width="100%">
+									<tr id="row0_Solution Information">
+										<td width="25%" class="label">*Client Name:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formClient->getElement('client_name'); ?>
+										</td>
+										<td width="25%" class="label">Email:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formClient->getElement('email'); ?>
+										</td>
+									</tr>
+									<tr id="row1_Solution Information">
+										<td width="25%" class="label">Address:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formClient->getElement('address'); ?>
+										</td>
+										<td width="25%" class="label">Phone:</br>(111) 222 3333</td>
+										<td width="75%" colspan="3" class="element">
+											<?php echo $this->formClient->getElement('phone'); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<p></p>
+						<?php 
+						$bSave = false;
+						if ($this->cid) {
+							if ($bChkClientUpdate == true){
+								$bSave = true;
+							}
+						} else {
+							if ($bChkClientInsert == true) {
+								$bSave = true;
+							}
+						}
+						if ($bSave == true) {?>
+						<table width="95%" border="0" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<td align="right">
+										<?php echo $this->formClient->getElement('submit-button'); ?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>
+						<?php }?>
+					</form>
+				</div>
+				<?php if ($this->cid) {?>
+				<div>
+					<?php
+					$url = $this->url(array('controller' => 'client', 'action' => 'detail', 'cid' => $this->cid, 'cpage' => $this->countperpage), null, true);
+					?>	
+					<form name="frmSearch" id="frmSearch" method="POST" action="<?php echo $url?>">		
+						<?php 
+							echo $this->formHidden('hidDel');
+							echo $this->formHidden('act');
+						?>
+						<script>
+							function doDelete(){
+								var frm = document.frmSearch;
+								frm.hidDel.value = selectChecked(document.frmSearch);
+								frm.act.value = "delete";
+								frm.action = "<?php echo $url;//$this->url(array('controller' => 'client', 'action' => 'detail', 'cid' => $this->cid, 'cpage' => $this->countperpage), null, true)?>";
+								frm.submit();
+							}
+						</script>						
+						<div class="idForCVpadding" style="width: 1024px; ">
+							<div class="listviewBorder">
+								<div class="listviewButtonLayer" style="width: 1024px; ">
+									<div class="pwie">
+										<table width="100%" border="0" cellpadding="0" cellspacing="0" class="lvblayerTable secContentbb">
+											<tbody>
+												<tr>
+													<td>
+														<table border="0" cellspacing="0" cellpadding="0" align="left">
+															<tbody>
+																<tr>
+																	<td class="pL10"> 
+																		<input type="button" id="btnDelete" name="btnDelete" class="button" value="Delete" onclick="doDelete()">
+																	</td>
+																	<td class="pL10">
+																		<input type="button" id="btnCreateNew" name="btnCreateNew" class="button createNewBtn" value="New Project" onclick="javascript:location.href='<?php echo $this->url(array('controller' => 'project', 'action' => 'detail', 'cid' => $this->cid), null, true); ?>'">
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+													   
+													<td width="10"> 
+												<img src="<?php echo $this->baseUrl().'/public/images/spacer.gif';?>" class="advancedsearch floatR" border="0" align="absmiddle" title="Search" onclick="javascript:callAdvSearch('Trans')" width="2" height="20"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<table width="100%" border="0" cellpadding="0" cellspacing="0" id="listViewTable" class="listview">
+									<tbody>
+										<tr id="advancedSearch_showpickId_Trans" height="35" width="100%" style="display:none;">
+											<td colspan="5">
+												<table border="0" width="100%" style="padding:5px">
+													<tr>
+														<td width="15%">Client Name</td>
+														<td width="28%"><?php echo $this->formProject->getElement('client_name_search'); ?></td>
+														<td width="16%">Project Name</td>
+														<td width="27%"><?php echo $this->formProject->getElement('project_name_search'); ?></td>
+													</tr>
+													<tr>
+														<td width="15%">Start Date </br> (mm/dd/yyyy)</td>
+														<td width="28%"><?php echo $this->formProject->getElement('start_date_search'); ?></td>
+														<td width="50%" colspan="2"></td>
+													</tr>
+												</table>
+											</td>
+											<td style="vertical-align: bottom; padding-bottom:5px">
+												<?php echo $this->formProject->getElement('button-search'); ?>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table width="100%" border="0" cellpadding="0" cellspacing="0" id="listViewTable" class="listview">
+									<tbody>
+										<tr class="tableHeadBg">
+											<td width="10">
+												<input type="checkbox" name="allcheck" onclick="selectAll(document.frmSearch)">
+											</td> 
+											<td class="tableHead">Client Name</td>
+											<td class="tableHead">Project Name</td>
+											<td class="tableHead">Start Date</td>
+											<td class="tableHead">Owner</td>
+										</tr>
+									</tbody>
+									<tbody id="lvTred">
+									<?php 
+									if (count($this->paginator)):
+										$i=1;
+										foreach ($this->paginator as $oObj):
+										$client_id = $oCommon->encodeKey($oObj['client_id']);
+										$project_id = $oCommon->encodeKey($oObj['project_id']);
+										$date = date_create($oObj['start_date']);
+										$start_date = $date->format('m/d/Y');
+										?>
+										<tr id="item<?php echo $i?>" class="tdout">
+											<td class="lvCB">
+												<input type="checkbox" name="chk" value="<?php echo $project_id?>">
+											</td>
+											<td> 
+												<?php echo $oObj['client_name']; ?>
+											</td>
+											<td> 
+												<a id="listView_item<?php echo $i?>" class="link" href="<?php echo $this->url(array('controller' => 'ipaddress', 'action' => 'index', 'pid' => $project_id), null, true); ?>"><?php echo $oObj['project_name']?></a>											</td>
+											<td><?php echo $start_date?></td>
+											<td><?php echo $oObj['user_create']?></td>
+										</tr>
+									<?php
+										$i++;
+										endforeach;
+									endif;
+									?>
+									</tbody>
+								</table>
+								<?php echo $this->paginationControl($this->paginator, 
+								        							'Sliding',
+                                    								'/partials/pagination.phtml', $this->paginatorParams); ?>
+							</div>
+							<br>
+						</div>
+					</form>
+				</div>
+				<?php }?>
+			</div>
+			<script>
+				showChangeMenuTab();
+				bindMoT('lvTred');
+			</script>

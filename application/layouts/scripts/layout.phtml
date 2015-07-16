@@ -1,0 +1,39 @@
+<?php 
+echo $this->doctype(); 
+$oCommon = new CommonController();
+$siteURL = $oCommon->siteURL();
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!-- <html xmlns="http://www.w3.org/1999/xhtml">-->
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="Cache-control" content="no-cache, no-store">
+  <title>Zelvin</title>
+  <script type="text/javascript" src="<?php echo $siteURL?>/zelvin/public/js/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="<?php echo $siteURL?>/zelvin/public/js/jquery-ui-1.8.24.custom.min.js"></script>
+  <script type="text/javascript" src="<?php echo $siteURL?>/zelvin/public/js/basic.js"></script>
+  <?php echo $this->headLink()->appendStylesheet($siteURL.'/zelvin/public/styles/basic.css')?>
+  <?php echo $this->headLink()->appendStylesheet($siteURL.'/zelvin/public/css/ui-lightness/jquery-ui-1.8.24.custom.css')?>  
+</head>
+<style type="text/css">
+	dt {
+		display: none;
+	}
+</style>
+<body>
+<?php if (Zend_Controller_Front::getInstance()->getRequest()->getControllerName()!='index' && Zend_Controller_Front::getInstance()->getRequest()->getActionName()!='forgotpass'){?>
+<!-- header START -->
+<?php include_once "header.phtml";?>
+<!-- header END -->
+<?php }?>
+<!-- content START -->
+<?php echo $this->layout()->content ?>
+<!-- content END -->
+<!-- footer START -->
+<?php include_once "footer.phtml";?>
+<!-- footer END -->
+</body>
+</html>

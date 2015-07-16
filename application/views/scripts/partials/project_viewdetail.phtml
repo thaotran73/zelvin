@@ -1,0 +1,56 @@
+			<?php
+			$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+			echo $this->form('frmDetail', $attributes);
+			?>
+			<input type="hidden" name="module" id="module" value="Projects">
+			<div id="show" class="bodycontainer">
+				<div id="rwb" class="rwb">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px"> 
+										Project Information
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p></p>
+						<div>
+							<table class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+								<tbody width="100%">
+									<tr>
+										<td width="25%" class="label">Client Name:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('client_name'); ?>
+										</td>
+										<td width="25%" class="label">Project Name:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('project_name'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">Start Date:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('start_date_view'); ?>
+										</td>
+										<td width="25%" class="label">Owner:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('user_create'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">Description:</td>
+										<td colspan="3" width="75%" class="element">
+											<?php echo $this->formProject->getElement('description_view'); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+				</div>
+			</div>
+			</form>
+			<script>
+				showChangeMenuTab();
+				bindMoT('lvTred');
+			</script>

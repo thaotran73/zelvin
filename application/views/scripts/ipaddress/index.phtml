@@ -1,0 +1,204 @@
+			<?php		
+			$oCommon = new CommonController();
+			$bChkProjectInsert = $oCommon->checkPermission('PROJECT', 'f_insert');
+			$bChkProjectUpdate = $oCommon->checkPermission('PROJECT', 'f_update');
+			$bChkIpAddressView = $oCommon->checkPermission('IPADDRESS', 'f_view');
+			$bChkIpAddressInsert = $oCommon->checkPermission('IPADDRESS', 'f_insert');
+			$bChkIpAddressUpdate = $oCommon->checkPermission('IPADDRESS', 'f_update');
+			$bChkIpAddressDelete = $oCommon->checkPermission('IPADDRESS', 'f_delete');
+			$bChkIpAddressImport = $oCommon->checkPermission('IPADDRESS', 'f_import');
+			$bChkIpAddressExport = $oCommon->checkPermission('IPADDRESS', 'f_export');
+			?>
+			<div id="show" class="bodycontainer">
+			<?php
+			$project_id = isset($this->oProject->project_id)?$oCommon->encodeKey($this->oProject->project_id):'';
+			$bSave = false;
+			if ($project_id) {
+				if ($bChkProjectUpdate == true){
+					$bSave = true;
+				}
+			} else {
+				if ($bChkProjectInsert == true) {
+					$bSave = true;
+				}
+			}
+			if ($bSave == true) {
+				$url = $this->url(array('controller' => 'ipaddress', 'action' => 'index', 'pid' => $project_id), null, true);
+				include_once APPLICATION_PATH . '/views/scripts/partials/project_detail.phtml';
+			} else {
+				$url = $this->url(array('controller' => 'ipaddress', 'action' => 'detail', 'pid' => $project_id), null, true);
+				include_once APPLICATION_PATH . '/views/scripts/partials/project_viewdetail.phtml';
+			}
+			?>	
+				<!-- Client Spreadsheet Information -->	
+				<?php include_once 'menu.phtml';?>
+				<?php if ($bChkIpAddressView == true) {?>
+				<script type="text/javascript">
+				   $(document).ready(function(){
+					   <?php if ($bChkIpAddressInsert == false) {?>
+						    $("#btnCreateNew").attr('disabled', 'disabled');
+						<?php }?>
+						<?php if ($bChkIpAddressDelete == false) {?>
+						    $("#btnDelete").attr('disabled', 'disabled');
+						    $("input[type='checkbox']").attr('disabled', 'disabled');
+						<?php }?>
+						<?php if ($bChkIpAddressImport == false) {?>
+							$("input[name='btnImport']").each(function(i) {
+					            $(this).attr('disabled', 'disabled');
+					        });
+						<?php }?>
+						<?php if ($bChkIpAddressExport == false) {?>
+							$("input[name='btnExport']").each(function(i) {
+					            $(this).attr('disabled', 'disabled');
+					        });
+						<?php }?>
+					   $( "#start_date_search" ).datepicker({ dateFormat: 'mm/dd/yy' });
+				   });
+				</script>
+				<div>
+					<?php
+					$url = $this->url(array('controller' => 'ipaddress', 'action' => 'index', 'pid' => $project_id, 'cpage' => $this->countperpage), null, true);
+					?>	
+					<form name="frmSearch" id="frmSearch" method="POST" action="<?php echo $url?>">		
+						<?php echo $this->formHidden('hidDel');
+						echo $this->formHidden('act');?>
+						<script>
+							function doDelete(){
+								var frm = document.frmSearch;
+								frm.hidDel.value = selectChecked(document.frmSearch);
+								frm.act.value = "delete";
+								frm.action = "<?php echo $this->url(array('controller' => 'ipaddress', 'action' => 'index', 'pid' => $project_id), null, true)?>";
+								frm.submit();
+							}
+						</script>			
+						<div class="idForCVpadding" style="width: 100%; ">
+							<div class="listviewBorder">
+								<div class="listviewButtonLayer" style="width: 1024px; ">
+									<div class="pwie">
+										<table width="100%" border="0" cellpadding="0" cellspacing="0" class="lvblayerTable secContentbb">
+											<tbody>
+												<tr>
+													<td width="868">
+														<table border="0" cellspacing="0" cellpadding="0" align="left">
+															<tbody>
+																<tr>
+																	<td class="pL10">
+																		<input type="button" id="btnDelete" name="btnDelete" class="button" value="Delete" onclick="doDelete()">
+																	</td>
+																	<td class="pL10">
+																		<input type="button" id="btnCreateNew" name="btnCreateNew" class="button createNewBtn" value="New" onclick="javascript:location.href='<?php echo $this->url(array('controller' => 'ipaddress', 'action' => 'detail', 'pid' => $project_id), null, true)?>'">
+																	</td>
+																	<td class="pL10">
+																		<input type="button" id="btnImport" name="btnImport" class="button importNewBtn" value="Import" onclick="javascript:location.href='<?php echo $this->url(array('controller' => 'ipaddress', 'action' => 'import', 'pid' => $project_id), null, true)?>'">
+																	</td>
+																	<td class="pL10">
+																		<input type="button" id="btnExport" name="btnExport" class="button" value="Export" onclick="javascript:location.href='<?php echo $this->url(array('controller' => 'ipaddress', 'action' => 'export', 'pid' => $project_id), null, true)?>'">
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+													 
+													<td width="36"><img src="<?php echo $this->baseUrl().'/public/images/spacer.gif';?>" class="advancedsearch floatR" border="0" align="absmiddle" title="Search" onclick="javascript:callAdvSearch('IP')"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<table width="100%" border="0" cellpadding="0" cellspacing="0" id="listViewTable" class="listview">
+									<tbody>
+										<tr id="advancedSearch_showpickId_IP" height="35" width="100%" style="display:none;">
+											<td colspan="5">
+												<table border="0" width="100%" style="padding:5px">
+													<tr>
+														<td width="15%">IP Address</td>
+														<td width="28%">
+														<?php echo $this->form->getElement('ip_address_search'); ?>
+														</td>
+														<td width="16%">URL</td>
+														<td width="27%">
+														<?php echo $this->form->getElement('url_search'); ?>
+														</td>
+													</tr>
+													<tr>
+														<td width="15%">Mnemonics</td>
+														<td width="28%">
+														<?php echo $this->form->getElement('mnemonics_search'); ?>
+														</td>
+														<td width="16%">Owner Name</td>
+														<td width="27%">
+														<?php echo $this->form->getElement('owner_name_search'); ?>
+														</td>
+													</tr>
+												</table>
+												</td>
+												<td style="vertical-align: bottom; padding-bottom:5px">
+													<?php echo $this->form->getElement('button-search'); ?>
+												</td>
+											</tr>
+										</table>
+										<div class="header">
+											<div style="width: 1008px;">
+												<table width="1008px" border="0" cellpadding="0" cellspacing="0" id="listViewTable" class="listview">
+													<thead>
+														<tr class="tableHeadBg">
+															<td width="2%">
+																<input type="checkbox" name="allcheck" onclick="selectAll(document.frmSearch)">
+															</td> 
+															<td width="24%"> 
+																IP Address
+															</td>
+															<td width="24%"> 
+																URL
+															</td>
+															<td width="25%"> 
+																<a href="<?php echo $this->url(array('controller' => 'ipaddress', 'action' => 'index', 'pid' => $project_id, 'page' => $this->page, 'cpage' => $this->countperpage, 'st' => $this->st), null, true)?>">Mnemonics</a>
+															</td>
+															<td width="25%"> 
+																Owner Name
+															</td>
+														</tr>
+													</thead>
+												</table>
+											</div>
+											<div class="content">
+												<table width="1008px" border="0" cellpadding="0" cellspacing="0" id="listViewTable" class="listview">
+													<tbody id="lvIP">
+														<?php 
+														if (count($this->paginator)):
+															foreach ($this->paginator as $oObj):
+															$ip_address_id = $oCommon->encodeKey($oObj['ip_address_id']);
+															?>
+															<tr id="ip1" class="tdout">
+																<td width="2%">
+																	<input type="checkbox" name="chk" value="<?php echo $ip_address_id?>">
+																</td>
+																<td width="24%">
+																	<a href="<?php echo $this->url(array('controller' => 'ipaddress', 'action' => 'detail', 'pid' => $project_id, 'id' => $ip_address_id), null, true)?>"><?php echo $oObj['ip_address']?></a>
+																</td>
+																<td width="24%"><?php echo $oObj['url']?></td>
+																<td width="25%"><?php echo $oObj['mnemonics']?></td> 
+																<td width="25%"><?php echo $oObj['owner_name']?></td> 
+															</tr>
+															<?php
+															endforeach;
+														endif;
+														?>
+													</tbody>
+												</table>
+											</div>
+										</div>
+								<?php echo $this->paginationControl($this->paginator, 
+								        							'Sliding',
+                                    								'/partials/pagination.phtml', $this->paginatorParams); ?>
+							</div>
+							<br>
+						</div>
+					</form>
+				</div>
+				<?php }?>
+				<!-- project NMAP Information -->
+			</div>
+			<script>
+				showChangeMenuTab();
+			</script>

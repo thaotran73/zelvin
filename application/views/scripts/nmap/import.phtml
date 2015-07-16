@@ -1,0 +1,56 @@
+			<div id="show" class="bodycontainer">
+				<?php 
+				$oCommon = new CommonController();
+				$project_id = isset($this->oProject->project_id)?$oCommon->encodeKey($this->oProject->project_id):'';
+				$url = $this->url(array('controller' => 'nmap', 'action' => 'import', 'pid' => $project_id), null, true);
+				include_once APPLICATION_PATH . '/views/scripts/partials/project_viewdetail.phtml';
+				?>
+				<!-- Client Spreadsheet Information -->
+				<?php include_once 'menu.phtml';?>
+				<div>
+					<?php
+					$url = $this->url(array('controller' => 'nmap', 'action' => 'import', 'pid' => $project_id), null, true);
+					$attributes = array('ENCTYPE'=>'multipart/form-data', 'METHOD'=>'post', 'ACTION'=> $url);
+					echo $this->form('frmImport', $attributes);
+					?>					
+					<div class="idForCVpadding" style="width: 1024px; ">
+							<div id="rwb" class="rwb" style="margin:0 !important">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td height="30" class="title hline" style="padding-left:10px"> 
+											Import 
+											Nmap
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div>
+								<table class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+									<tbody width="100%">
+										<tr>
+											<td width="25%" class="label"></td>
+											<td width="75%" class="label" colspan="2" style="text-align:left !important">
+												<?php echo $this->form->getElement('chk_overwrite'); ?> 
+											</td>
+										</tr>
+										<tr>
+											<td width="25%" class="label">*Select a File:</td>
+											<td width="25%" class="element">
+												<?php echo $this->form->getElement('importFile'); ?>
+											</td>
+											<td width="50%" class="label">
+												<?php echo $this->form->getElement('submit-button'); ?>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+					</div>
+					<!-- project NMAP Information -->
+				</div>
+				</form>
+			</div>
+		<script>
+			showChangeMenuTab();
+		</script>

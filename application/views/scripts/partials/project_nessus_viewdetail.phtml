@@ -1,0 +1,79 @@
+			<?php
+			$attributes = array('METHOD'=>'post', 'ACTION'=> $url);
+			echo $this->form('frmDetail', $attributes);
+			?>
+			<input type="hidden" name="module" id="module" value="Projects">
+			<div id="show" class="bodycontainer">
+				<div id="rwb" class="rwb">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td height="30" class="title hline" style="padding-left:10px"> 
+										Nessus Information
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div>
+							<table class="secContent" width="95%" border="0" cellspacing="1" cellpadding="0">
+								<tbody width="100%">
+									<tr>
+										<td width="25%" class="label">Client Name:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('client_name'); ?>
+										</td>
+										<td width="25%" class="label">Project Name:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('project_name'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">Start Date:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('start_date_view'); ?>
+										</td>
+										<td width="25%" class="label">Owner:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formProject->getElement('user_create'); ?>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">IP Address:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formNessus->getElement('ip_address')?>
+										</td>
+										<td width="25%" class="label">Port:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formNessus->getElement('port')?>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">Service:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formNessus->getElement('service')?>
+										</td>
+										<td width="25%" class="label">Protocol:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formNessus->getElement('protocol')?>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="label">State:</td>
+										<td width="25%" class="element">
+											<?php echo $this->formNessus->getElement('state')?>
+										</td>
+										<td width="25%" class="label">Vulnerbility state</td>
+										<td width="25%" class="element">
+											<?php echo $this->formNessus->getElement('vulnerbility_state')?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+				</div>
+			</div>
+			</form>
+			<script>
+				showChangeMenuTab();
+				bindMoT('lvTred');
+			</script>
